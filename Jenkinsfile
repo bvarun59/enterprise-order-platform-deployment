@@ -63,28 +63,28 @@ pipeline {
 
         }
 
-        stage('Verify Cosign Signature') {
+stage('Verify Cosign Signature') {
 
-            steps {
+    steps {
 
-                withCredentials([
-                    file(
-                        credentialsId: 'cosign.pub',
-                        variable: 'COSIGN_PUBLIC_KEY'
-                    )
-                ]) {
+        withCredentials([
+            file(
+                credentialsId: 'cosign-public-key',
+                variable: 'COSIGN_PUBLIC_KEY'
+            )
+        ]) {
 
-                    sh """
-                        cosign verify \
-                        --key \$COSIGN_PUBLIC_KEY \
-                        ${IMAGE_NAME}:${params.IMAGE_TAG}
-                    """
+            sh """
+            cosign verify \
+              --key \$COSIGN_PUBLIC_KEY \
+              ${IMAGE_NAME}:${params.IMAGE_TAG}
+            """
 
-                    }
+        }
 
-                }
+    }
 
-            }
+}
 
         }
 
