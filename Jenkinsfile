@@ -86,6 +86,19 @@ stage('Verify Cosign Signature') {
 
 }
 
+stage('Update Image Tag') {
+
+    steps {
+
+        sh """
+            sed -i 's/^IMAGE_TAG=.*/IMAGE_TAG=${params.IMAGE_TAG}/' .env
+        """
+
+        sh 'cat .env'
+    }
+
+}
+
         }
 
 }
