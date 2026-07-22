@@ -51,6 +51,17 @@ pipeline {
             }
 
         }
+        stage('Pull Docker Image') {
+
+            steps {
+
+                sh """
+                docker pull ${IMAGE_NAME}:${params.IMAGE_TAG}
+                """
+
+            }
+
+        }
 
     }
 
