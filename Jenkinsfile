@@ -117,6 +117,16 @@ IMAGE_TAG=${params.IMAGE_TAG}
 
 }
 
+stage('Deploy') {
+    steps {
+        sh '''
+            docker compose down || true
+            docker compose pull
+            docker compose up -d
+        '''
+    }
+}
+
         }
 
 }
