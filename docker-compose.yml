@@ -6,7 +6,7 @@ services:
 
     image: varundocker3/orderservice:${IMAGE_TAG}
 
-    container_name: orderservice
+    container_name: orderserviceprod
 
     restart: unless-stopped
 
