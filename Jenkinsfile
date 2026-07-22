@@ -4,9 +4,9 @@ pipeline {
 
     parameters {
         string(
-            name: 'IMAGE_TAG',
-            defaultValue: 'latest',
-            description: 'Docker image tag'
+        name: 'IMAGE_TAG',
+        defaultValue: '',
+        description: 'Git Commit SHA (Example: 7b46ff1)'
         )
     }
 
@@ -21,6 +21,23 @@ pipeline {
                 checkout scm
             }
         }
+
+        stage('Validate Parameters') {
+
+            steps {
+
+                script {
+
+                    if (!params.IMAGE_TAG?.trim()) {
+                    error("IMAGE_TAG parameter is required")
+                }
+
+            }
+
+        }
+
+    }
+
 
         stage('Display Deployment Info') {
             steps {
@@ -86,15 +103,16 @@ stage('Verify Cosign Signature') {
 
 }
 
-stage('Update Image Tag') {
+stage('Generate Environment File') {
 
     steps {
 
-        sh """
-            sed -i 's/^IMAGE_TAG=.*/IMAGE_TAG=${params.IMAGE_TAG}/' .env
-        """
+        writeFile file: '.env', text: """
+IMAGE_TAG=${params.IMAGE_TAG}
+"""
 
         sh 'cat .env'
+
     }
 
 }
